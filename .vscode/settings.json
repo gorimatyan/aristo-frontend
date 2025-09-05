@@ -1,0 +1,27 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "cSpell.words": [
+    "knip",
+    "pino",
+    "smaponsive",
+    "zustand",
+    "paidy",
+    "Telecomcredit",
+    "mbti",
+    "mbtis"
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    // 任意のpropsに自動補完が効くようにする
+    ".*ClassName*"
+  ]
+}

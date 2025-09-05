@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request: # PR作成・更新時に実行
+  workflow_dispatch: # 手動実行も可能
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Node.jsセットアップ
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      cache-hit: ${{ steps.setup.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node and deps
+        id: setup
+        uses: ./.github/actions/setup-node-and-deps
+
+  # 静的解析チェック（Lint + 型チェック）
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node and deps
+        uses: ./.github/actions/setup-node-and-deps
+      - name: Run lint and type check
+        run: npm run ci:lint
+
+  # ビルドテスト
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node and deps
+        uses: ./.github/actions/setup-node-and-deps
+      - name: Run build
+        run: npm run build

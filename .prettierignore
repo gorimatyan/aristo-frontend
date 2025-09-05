@@ -1,0 +1,16 @@
+# dependencies
+/node_modules
+.yarn/*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# static files
+/public
+
+# vercel
+.vercel
