@@ -10,17 +10,22 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  // Next.js基本設定
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  }, // Next.js基本設定
   ...compat.extends(
     "next/core-web-vitals",
     "next/typescript",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-  ),
-
-  // プラグイン設定
+  ), // プラグイン設定
   ...compat.plugins("unused-imports"),
-
   {
     ignores: [
       "**/node_modules/*",
@@ -29,9 +34,7 @@ const eslintConfig = [
       "**/dist/*",
       "next-env.d.ts",
     ],
-  },
-
-  // メインルール設定
+  }, // メインルール設定
   {
     rules: {
       // Import関連
@@ -64,9 +67,7 @@ const eslintConfig = [
       "no-console": ["error", { allow: ["error"] }],
       "prefer-const": "error",
     },
-  },
-
-  // テスト・Storybookファイル用の緩いルール
+  }, // テスト・Storybookファイル用の緩いルール
   {
     files: ["**/*.test.*", "**/*.spec.*", "**/*.stories.*"],
     rules: {
