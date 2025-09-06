@@ -16,13 +16,13 @@ export const getViewportSize = (value: number, baseViewport: number) => {
  */
 export const transformSmaponsiveSizeProperty = (
   value: number,
-  viewSizes: ViewSizes
+  viewSizes: ViewSizes,
 ) => {
   const isValidOrderSizes =
     viewSizes.min < viewSizes.base && viewSizes.base < viewSizes.max
   if (!isValidOrderSizes) {
     throw Error(
-      `Invalid ViewSizes. Should set min, base and max to be larger in that order`
+      `Invalid ViewSizes. Should set min, base and max to be larger in that order`,
     )
   }
   const base = getViewportSize(value, viewSizes.base) + "vw"
