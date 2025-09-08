@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { mergeClassNames } from "@/features/style/classnames"
 import { useEffect, useState } from "react"
+import { CharacterSpeech } from "@/features/characterSpeech/CharacterSpeech"
 
 type DebateFaceoffBoardProps = {
   positiveUserName: string
@@ -122,8 +123,15 @@ export const DebateFaceoffBoard: React.FC<DebateFaceoffBoardProps> = ({
           <div className="text-72x leading-[1.0] text-[#117628]">否定</div>
         </div>
       </div>
+      <CharacterSpeech
+        className={mergeClassNames(
+          transitionCls,
+          isActive ? "opacity-100" : "opacity-0",
+        )}
+        videoSrc="/assets/videos/aristotle/he_mans_facial_express_2.mp4"
+        name="アリストテレス"
+        text="がんばえー"
+      />
     </div>
   )
 }
-
-export default DebateFaceoffBoard
