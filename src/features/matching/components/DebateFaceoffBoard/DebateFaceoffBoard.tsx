@@ -3,12 +3,14 @@
 import Image from "next/image"
 import { mergeClassNames } from "@/features/style/classnames"
 import { useEffect, useState } from "react"
+import { CharacterSpeech } from "@/features/characterSpeech/CharacterSpeech"
 
 type DebateFaceoffBoardProps = {
   positiveUserName: string
   negativeUserName: string
   themeName: string
   topic: string
+  isActive: boolean
   className?: string
 }
 
@@ -17,26 +19,51 @@ export const DebateFaceoffBoard: React.FC<DebateFaceoffBoardProps> = ({
   negativeUserName,
   themeName,
   topic,
+  isActive,
   className,
 }) => {
   const [showTitle, setShowTitle] = useState(false)
   const [showPositive, setShowPositive] = useState(false)
   const [showNegative, setShowNegative] = useState(false)
+  const [showVS, setShowVS] = useState(false)
 
   const transitionCls = "transition-all duration-500 ease-out"
   const fadeBase = "opacity-0 translate-y-2"
   const fadeShow = "opacity-100 translate-y-0"
 
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setShowTitle(true))
-    const t1 = setTimeout(() => setShowPositive(true), 1000)
-    const t2 = setTimeout(() => setShowNegative(true), 2000)
-    return () => {
-      cancelAnimationFrame(raf)
-      clearTimeout(t1)
-      clearTimeout(t2)
+    let raf: number | null = null
+    let t1: ReturnType<typeof setTimeout> | null = null
+    let t2: ReturnType<typeof setTimeout> | null = null
+
+    if (isActive) {
+      // いったん非表示にしてから次フレームで順次表示
+      setShowTitle(false)
+      setShowPositive(false)
+      setShowNegative(false)
+      setShowVS(false)
+      raf = requestAnimationFrame(() => {
+        setShowTitle(true)
+        t1 = setTimeout(() => {
+          setShowPositive(true)
+          setShowVS(true)
+        }, 400)
+        t2 = setTimeout(() => setShowNegative(true), 800)
+      })
+    } else {
+      // 全てフェードアウト
+      setShowNegative(false)
+      setShowPositive(false)
+      setShowTitle(false)
+      setShowVS(false)
     }
-  }, [])
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
+    }
+  }, [isActive])
 
   return (
     <div
@@ -76,7 +103,15 @@ export const DebateFaceoffBoard: React.FC<DebateFaceoffBoardProps> = ({
           <div className="text-20x text-gray-400">{positiveUserName}</div>
           <div className="text-72x leading-[1.0] text-[#3F69A7]">肯定</div>
         </div>
-        <div className="text-20x">VS</div>
+        <div
+          className={mergeClassNames(
+            "text-20x",
+            transitionCls,
+            showVS ? "opacity-100" : "opacity-0",
+          )}
+        >
+          VS
+        </div>
         <div
           className={mergeClassNames(
             "text-center",
@@ -88,8 +123,15 @@ export const DebateFaceoffBoard: React.FC<DebateFaceoffBoardProps> = ({
           <div className="text-72x leading-[1.0] text-[#117628]">否定</div>
         </div>
       </div>
+      <CharacterSpeech
+        className={mergeClassNames(
+          transitionCls,
+          isActive ? "opacity-100" : "opacity-0",
+        )}
+        videoSrc="/assets/videos/aristotle/he_mans_facial_express_2.mp4"
+        name="アリストテレス"
+        text="がんばえー"
+      />
     </div>
   )
 }
-
-export default DebateFaceoffBoard
