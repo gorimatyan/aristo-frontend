@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 
-import TanstackProvider from "@/features/tanstack/TanstackProvider"
+import TanstackProvider from "@/features/tanstack/components/TanstackProvider"
+import CenterStageLayout from "@/features/layout/components/CenterStageLayout"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TanstackProvider>{children}</TanstackProvider>
+        <CenterStageLayout>
+          <TanstackProvider>{children}</TanstackProvider>
+        </CenterStageLayout>
       </body>
     </html>
   )
