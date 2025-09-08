@@ -16,8 +16,12 @@ export const CharacterSpeech: React.FC<CharacterSpeechProps> = ({
 }) => {
   return (
     <div
+      style={{
+        background:
+          "linear-gradient(to top, rgba(0, 0, 0, 0.9) 70%, transparent)",
+      }}
       className={mergeClassNames(
-        "flex min-h-100x flex-col items-center justify-center gap-8x bg-gradient-to-t from-black to-transparent p-16x text-white",
+        "fixed bottom-0 left-0 right-0 z-50 flex min-h-90x flex-col items-center justify-center gap-8x p-16x text-white",
         className,
       )}
     >
@@ -29,17 +33,19 @@ export const CharacterSpeech: React.FC<CharacterSpeechProps> = ({
             autoPlay
             loop
             muted
-            className="h-48x w-48x rounded-full"
+            className="h-36x w-36x rounded-full"
           />
         </div>
 
         {/* キャラ名 */}
         <div>
-          <div className="font-bold">{name}</div>
+          <div className="text-16x font-bold">{name}</div>
         </div>
       </div>
 
-      <div className="py-16x text-center text-18x font-bold">{text}</div>
+      <div className="py-8x text-center text-18x font-bold">
+        <div dangerouslySetInnerHTML={{ __html: text }} />
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "ジャンルを選択",
 }
 
-export default function GenreLayout({
+export default function ThemeLayout({
   children,
 }: {
   children: React.ReactNode

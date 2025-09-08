@@ -4,7 +4,7 @@
 export const SCREENS = {
   min: 320,
   base: 390,
-  max: 500,
+  max: 430,
 }
 
 /**

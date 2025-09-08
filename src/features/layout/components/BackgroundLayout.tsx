@@ -11,8 +11,12 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
   children,
 }) => {
   return (
-    <div className="relative min-h-dvh w-full overflow-hidden">
-      <MainHeader userName="ユーザー名" rightSide={<div>右側</div>} />
+    <div className="relative mt-32x min-h-dvh w-full">
+      <MainHeader
+        className="h-32x"
+        userName="ユーザー名"
+        rightSide={<div>右側</div>}
+      />
       <Image
         src={backgroundImageSrc}
         alt="background"

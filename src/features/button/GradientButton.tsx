@@ -17,11 +17,11 @@ export const GradientButton = ({
       type="button"
       onClick={onClick}
       className={mergeClassNames(
-        "w-full bg-[linear-gradient(90deg,transparent_0%,#3F3F3F_40%,#3F3F3F_60%,transparent_100%)] px-6 py-3 text-18x font-bold text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)]",
+        "w-full bg-[linear-gradient(90deg,transparent_0%,#3F3F3F_40%,#3F3F3F_60%,transparent_100%)] px-24x py-12x text-18x font-bold tracking-wide text-white shadow-[0_2px_8px_rgba(0,0,0,0.35)]",
         className,
       )}
     >
-      <span className="tracking-wide">{item}</span>
+      {item}
     </button>
   )
 }

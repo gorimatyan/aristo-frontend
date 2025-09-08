@@ -9,12 +9,13 @@ export const ThemeSelectPage = () => {
   const router = useRouter()
   return (
     <BackgroundLayout backgroundImageSrc="/assets/images/debate/u7544387239_a_black_and_white_photograph_of_the_72_hexen_stoc_d4e4e37e-bfea-4797-ba2a-41b76a3dfa3b_1.png">
-      <div className="text-center text-white">
-        <div className="my-32x flex items-center justify-center">
-          <h2 className="text-24x font-bold">今週のテーマ</h2>
-        </div>
+      <div className="h-[60dvh] text-center text-white">
+        <div className="flex h-full flex-col justify-center gap-16x">
+          <div className="my-32x flex items-center justify-center">
+            <h2 className="text-20x font-bold">今週のテーマ</h2>
+          </div>
 
-        <ul className="space-y-4">
+          {/* テーマ一覧 */}
           {[
             {
               theme: "教育",
@@ -35,7 +36,7 @@ export const ThemeSelectPage = () => {
               onClick: () => router.push("/theme/diplomacy"),
             },
           ].map((item) => (
-            <li key={item.label} className="flex items-center">
+            <div key={item.label} className="flex items-center">
               <GradientButton
                 className="px-32x py-24x"
                 item={
@@ -57,13 +58,13 @@ export const ThemeSelectPage = () => {
                 }
                 onClick={item.onClick}
               />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
       <CharacterSpeech
         className="absolute bottom-0 left-0 right-0"
-        videoSrc="assets/videos/aristotle/he_mans_facial_express_2.mp4"
+        videoSrc="/assets/videos/aristotle/he_mans_facial_express_2.mp4"
         name="アリストテレス"
         text="テーマを選ぶのじゃ。"
       />

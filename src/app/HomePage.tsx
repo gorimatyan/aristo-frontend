@@ -29,7 +29,7 @@ export const HomePage = () => {
       </div>
 
       {/* メニュー */}
-      <ul className="mt-64x flex w-full max-w-[420px] flex-col items-stretch gap-12x">
+      <ul className="mt-64x flex w-full max-w-500x flex-col items-stretch gap-12x">
         {[
           { label: "プレイ", onClick: () => router.push("/theme") },
           { label: "スピーチジム", onClick: () => {} },
@@ -38,7 +38,7 @@ export const HomePage = () => {
         ].map((item) => (
           <li key={item.label}>
             <GradientButton
-              className="py-14x text-20x"
+              className="w-full py-14x text-20x"
               item={item.label}
               onClick={item.onClick}
             />
