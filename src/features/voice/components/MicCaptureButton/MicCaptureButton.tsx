@@ -9,6 +9,7 @@ type MicCaptureButtonProps = {
   onClick?: () => void
   className?: string
   size?: number // 直径(px)
+  countdown?: number | null
 }
 
 export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
@@ -16,9 +17,18 @@ export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
   onClick,
   className,
   size = 120,
+  countdown = null,
 }) => {
   const isRecording = state === "recording"
   const isDisabled = state === "disabled"
+  const showCountdown = countdown !== null && countdown !== undefined
+  const labelText = isRecording
+    ? "ダブルタップで終了"
+    : showCountdown
+      ? "自信もって話してね～"
+      : state === "idle"
+        ? "タップでスタート"
+        : ""
 
   return (
     <div
@@ -27,6 +37,11 @@ export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
         className,
       )}
     >
+      {labelText && (
+        <div className="select-none text-center text-14x font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+          {labelText}
+        </div>
+      )}
       {/* ボタン本体 */}
       <button
         type="button"
@@ -52,8 +67,12 @@ export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
         {/* 外周リング */}
         <span className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/30" />
 
-        {/* アイコン */}
-        {state === "disabled" ? (
+        {/* 中央表示（カウントダウン > アイコン） */}
+        {showCountdown ? (
+          <span className="text-36x font-bold leading-none text-[#ff4747]">
+            {countdown}
+          </span>
+        ) : state === "disabled" ? (
           <MicOffIcon className="h-[60%] w-[60%] fill-gray-400" />
         ) : (
           <MicOnIcon
