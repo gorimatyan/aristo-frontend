@@ -4,6 +4,8 @@ import { mergeClassNames } from "@/features/style/classnames"
 import { MicController } from "@/features/voice/components/MicController/MicController"
 import { OwlHelpButton } from "@/features/owlHelp/components/OwlHelpButton/OwlHelpButton"
 import { PoiMemoButton } from "@/features/poi/components/PoiMemoButton/PoiMemoButton"
+import { PoiMemoSlidePanel } from "@/features/poi/components/PoiMemoSlidePanel/PoiMemoSlidePanel"
+import { useState } from "react"
 
 type MatchingBottomActionsProps = {
   onClickOwlHelp?: () => void
@@ -16,6 +18,17 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
   onClickPoiMemo,
   className,
 }) => {
+  const [showMemo, setShowMemo] = useState(false)
+  const handleOpenMemo = () => {
+    setShowMemo(true)
+    onClickPoiMemo?.()
+  }
+
+  const handleCloseMemo = () => {
+    setShowMemo(false)
+  }
+
+  const handleToggleDirection = () => {}
   return (
     <div
       className={mergeClassNames(
@@ -30,8 +43,13 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
 
         <MicController />
 
-        <PoiMemoButton onClick={onClickPoiMemo} />
+        <PoiMemoButton onClick={handleOpenMemo} />
       </div>
+      <PoiMemoSlidePanel
+        isOpen={showMemo}
+        onToggleDirection={handleToggleDirection}
+        onClose={handleCloseMemo}
+      />
     </div>
   )
 }
