@@ -1,34 +1,46 @@
 "use client"
 
 import { mergeClassNames } from "@/features/style/classnames"
-import { MicController } from "@/features/voice/components/MicController/MicController"
+import { useState } from "react"
+import { MicCaptureButton } from "@/features/voice/components/MicCaptureButton/MicCaptureButton"
 import { OwlHelpButton } from "@/features/owlHelp/components/OwlHelpButton/OwlHelpButton"
 import { PoiMemoButton } from "@/features/poi/components/PoiMemoButton/PoiMemoButton"
 import { PoiMemoSlidePanel } from "@/features/poi/components/PoiMemoSlidePanel/PoiMemoSlidePanel"
-import { useState } from "react"
+import PoiButton from "@/features/poi/components/PoiButton/PoiButton"
+
+type Role = "listener" | "speaker"
+type LocalMicState = "idle" | "countdown" | "recording" | "disabled"
 
 type MatchingBottomActionsProps = {
-  onClickOwlHelp?: () => void
-  onClickPoiMemo?: () => void
+  role: Role
+  localMicState: LocalMicState
+  countdown?: number | null
   className?: string
+
+  onMicTap: () => void
+  onOpenPoi?: () => void
+  onOpenHint?: () => void
+  onOpenPoiMemo?: () => void
 }
 
 export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
-  onClickOwlHelp,
-  onClickPoiMemo,
+  role,
+  localMicState,
+  countdown,
   className,
+  onMicTap,
+  onOpenPoi,
+  onOpenHint,
+  onOpenPoiMemo,
 }) => {
   const [showMemo, setShowMemo] = useState(false)
+
   const handleOpenMemo = () => {
     setShowMemo(true)
-    onClickPoiMemo?.()
+    onOpenPoiMemo?.()
   }
+  const handleCloseMemo = () => setShowMemo(false)
 
-  const handleCloseMemo = () => {
-    setShowMemo(false)
-  }
-
-  const handleToggleDirection = () => {}
   return (
     <div
       className={mergeClassNames(
@@ -39,17 +51,31 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
       )}
     >
       <div className="mx-auto flex w-full max-w-[500px] items-end justify-center gap-32x px-16x">
-        <OwlHelpButton className="mt-2x" onClick={onClickOwlHelp} />
+        {role === "listener" ? (
+          <PoiButton onClick={onOpenPoi} />
+        ) : (
+          <OwlHelpButton className="mt-2x" onClick={onOpenHint} />
+        )}
 
-        <MicController />
+        <MicCaptureButton
+          state={
+            localMicState === "recording"
+              ? "recording"
+              : localMicState === "disabled"
+                ? "disabled"
+                : "idle"
+          }
+          countdown={localMicState === "countdown" ? (countdown ?? 3) : null}
+          onClick={onMicTap}
+        />
 
-        <PoiMemoButton onClick={handleOpenMemo} />
+        {role === "listener" ? (
+          <PoiMemoButton onClick={handleOpenMemo} />
+        ) : (
+          <span className="block w-46x" />
+        )}
       </div>
-      <PoiMemoSlidePanel
-        isOpen={showMemo}
-        onToggleDirection={handleToggleDirection}
-        onClose={handleCloseMemo}
-      />
+      <PoiMemoSlidePanel isOpen={showMemo} onClose={handleCloseMemo} />
     </div>
   )
 }
