@@ -6,13 +6,11 @@ import { mergeClassNames } from "@/features/style/classnames"
 type OwlHelpButtonProps = {
   onClick?: () => void
   className?: string
-  label?: string
 }
 
 export const OwlHelpButton: React.FC<OwlHelpButtonProps> = ({
   onClick,
   className,
-  label = "ふくろうヘルプ",
 }) => {
   return (
     <button
@@ -32,7 +30,7 @@ export const OwlHelpButton: React.FC<OwlHelpButtonProps> = ({
           className="h-48x w-48x object-contain"
         />
       </span>
-      <span>{label}</span>
+      <span>ふくろうヘルプ</span>
     </button>
   )
 }

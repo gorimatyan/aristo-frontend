@@ -7,6 +7,7 @@ import { OwlHelpButton } from "@/features/owlHelp/components/OwlHelpButton/OwlHe
 import { PoiMemoButton } from "@/features/poi/components/PoiMemoButton/PoiMemoButton"
 import { PoiMemoSlidePanel } from "@/features/poi/components/PoiMemoSlidePanel/PoiMemoSlidePanel"
 import PoiButton from "@/features/poi/components/PoiButton/PoiButton"
+import { OwlHelpSlidePanel } from "@/features/owlHelp/components/OwlHelpSlidePanel/OwlHelpSlidePanel"
 
 type Role = "listener" | "speaker"
 type LocalMicState = "idle" | "countdown" | "recording" | "disabled"
@@ -23,6 +24,9 @@ type MatchingBottomActionsProps = {
   onOpenPoiMemo?: () => void
 }
 
+/**
+ * 対戦画面下部のアクションボタン群
+ */
 export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
   role,
   localMicState,
@@ -34,12 +38,19 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
   onOpenPoiMemo,
 }) => {
   const [showMemo, setShowMemo] = useState(false)
+  const [showHint, setShowHint] = useState(false)
 
   const handleOpenMemo = () => {
     setShowMemo(true)
     onOpenPoiMemo?.()
   }
   const handleCloseMemo = () => setShowMemo(false)
+
+  const handleOpenHint = () => {
+    setShowHint(true)
+    onOpenHint?.()
+  }
+  const handleCloseHint = () => setShowHint(false)
 
   return (
     <div
@@ -54,7 +65,7 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
         {role === "listener" ? (
           <PoiButton onClick={onOpenPoi} />
         ) : (
-          <OwlHelpButton className="mt-2x" onClick={onOpenHint} />
+          <OwlHelpButton className="mt-2x" onClick={handleOpenHint} />
         )}
 
         <MicCaptureButton
@@ -69,13 +80,21 @@ export const MatchingBottomActions: React.FC<MatchingBottomActionsProps> = ({
           onClick={onMicTap}
         />
 
-        {role === "listener" ? (
-          <PoiMemoButton onClick={handleOpenMemo} />
-        ) : (
-          <span className="block w-46x" />
-        )}
+        <PoiMemoButton onClick={handleOpenMemo} />
       </div>
+
+      {/* メモパネル */}
       <PoiMemoSlidePanel isOpen={showMemo} onClose={handleCloseMemo} />
+
+      {/* ヒントパネル */}
+      <OwlHelpSlidePanel
+        contents={[
+          "ああああああああああああああああああああああああ",
+          "いいいいいいいいいいいいいいいいいいいいいいいいい",
+        ]}
+        isOpen={showHint}
+        onClose={handleCloseHint}
+      />
     </div>
   )
 }

@@ -39,13 +39,11 @@ export const StartPage =
           defaultOpen={false}
         />
         <MatchingBottomActions
-          onOpenHint={() => {
-            /* open help */
-          }}
+          onOpenHint={() => {}}
           onOpenPoiMemo={() => {
             /* open memo */
           }}
-          role="listener"
+          role="speaker"
           localMicState="idle"
           onMicTap={() => {
             /* start recording */
