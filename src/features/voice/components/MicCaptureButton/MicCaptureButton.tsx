@@ -16,7 +16,6 @@ export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
   state,
   onClick,
   className,
-  size = 120,
   countdown = null,
 }) => {
   const isRecording = state === "recording"
@@ -48,10 +47,9 @@ export const MicCaptureButton: React.FC<MicCaptureButtonProps> = ({
         onClick={!isDisabled ? onClick : undefined}
         aria-disabled={isDisabled}
         className={mergeClassNames(
-          "relative isolate grid place-items-center rounded-full bg-white shadow-[inset_0_0_12px_rgba(0,0,0,0.35)]",
+          "relative isolate grid size-90x place-items-center rounded-full bg-white shadow-[inset_0_0_12px_rgba(0,0,0,0.35)]",
           isDisabled ? "cursor-not-allowed opacity-80" : "hover:brightness-95",
         )}
-        style={{ width: size, height: size }}
       >
         {/* 赤いリングのパルス（録音時のみ） */}
         {isRecording && (
