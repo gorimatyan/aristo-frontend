@@ -29,7 +29,7 @@ export const HomePage = () => {
       </div>
 
       {/* メニュー */}
-      <ul className="mt-64x flex w-full max-w-500x flex-col items-stretch gap-12x">
+      <ul className="flex w-full max-w-500x flex-col items-stretch gap-12x py-64x">
         {[
           { label: "プレイ", onClick: () => router.push("/theme") },
           { label: "スピーチジム", onClick: () => {} },
