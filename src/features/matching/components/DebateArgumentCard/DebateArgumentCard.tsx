@@ -27,7 +27,7 @@ export const DebateArgumentCard: React.FC<DebateArgumentCardProps> = ({
   const canAccordion = Boolean(summaries && summaries.length > 0 && fullText)
   const [open, setOpen] = useState(canAccordion ? defaultOpen : true)
 
-  const titleBg = side === "positive" ? "bg-[#82A9F9]" : "bg-[#117628]"
+  const titleBg = side === "positive" ? "bg-[#3F69A7]" : "bg-[#117628]"
 
   return (
     <section className={mergeClassNames("text-white", className)}>
@@ -118,5 +118,3 @@ export const DebateArgumentCard: React.FC<DebateArgumentCardProps> = ({
     </section>
   )
 }
-
-export default DebateArgumentCard
