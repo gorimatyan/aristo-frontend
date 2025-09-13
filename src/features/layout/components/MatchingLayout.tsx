@@ -27,7 +27,7 @@ export const MatchingLayout: React.FC<MatchingLayoutProps> = ({
           alt="background"
           fill
           priority
-          className="-z-10 object-cover opacity-40 blur-[4px]"
+          className="-z-10 object-cover opacity-15 blur-[4px]"
         />
       )}
       {children}
