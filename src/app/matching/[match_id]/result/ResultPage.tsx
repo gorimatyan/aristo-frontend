@@ -18,6 +18,19 @@ export const ResultPage =
           category="pointOfInformation"
           className="mb-16x"
         />
+        {/* <OverallScore
+          yourScore={10}
+          yourUserName="太郎"
+          opponentScore={10}
+          opponentUserName="花子"
+          yourSide="positive"
+        />
+        <CharacterSpeech
+          videoSrc="/assets/videos/aristotle/he_mans_facial_express_2.mp4"
+          name="アリストテレス"
+          text="「負けたことがある」というのが<br />
+          いつか大きな財産となるのじゃ"
+        /> */}
       </MatchingLayout>
     )
   }

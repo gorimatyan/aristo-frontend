@@ -1,6 +1,7 @@
 import type { ComponentPropsWithRef } from "react"
 import { forte } from "../../../../../styles/fonts"
 import { mergeClassNames } from "@/features/style/classnames"
+import { useEffect, useState } from "react"
 
 type CategoryScoreProps = ComponentPropsWithRef<"div"> & {
   yourScore: number
@@ -46,6 +47,31 @@ export const CategoryScore = ({
   className,
   ...props
 }: CategoryScoreProps) => {
+  const [showFirst, setShowFirst] = useState(false)
+  const [showOpponentScore, setShowOpponentScore] = useState(false)
+  const [showYourScore, setShowYourScore] = useState(false)
+
+  const transitionCls = "transition-all duration-500 ease-out"
+  const fadeBase = "opacity-0 translate-y-2"
+  const fadeShow = "opacity-100 translate-y-0"
+
+  useEffect(() => {
+    // ①最初の要素をフェードイン
+    const timer1 = setTimeout(() => setShowFirst(true), 1000)
+
+    // ②相手のスコアをフェードイン
+    const timer2 = setTimeout(() => setShowOpponentScore(true), 2000)
+
+    // ③少し間を入れてから自分のスコアをフェードイン
+    const timer3 = setTimeout(() => setShowYourScore(true), 3500)
+
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+      clearTimeout(timer3)
+    }
+  }, [])
+
   const categoryNameEn = () => {
     if (category === "pointOfInformation") {
       return (
@@ -102,36 +128,72 @@ export const CategoryScore = ({
       {...props}
     >
       <div
-        className={`pb-6x text-14x font-bold tracking-wider ${categoryColor[category]}`}
+        className={mergeClassNames(
+          `pb-6x text-14x font-bold tracking-wider ${categoryColor[category]}`,
+          transitionCls,
+          showFirst ? fadeShow : fadeBase,
+        )}
       >
         {categoryNameJp[category]}
       </div>
       <div
-        className={`${forte.className} flex flex-col items-center justify-center pb-24x`}
+        className={mergeClassNames(
+          `${forte.className} flex flex-col items-center justify-center pb-24x`,
+          transitionCls,
+          showFirst ? fadeShow : fadeBase,
+        )}
       >
         {categoryNameEn()}
       </div>
       <div className="flex items-start gap-32x">
         <div className="flex flex-col items-center justify-center gap-20x">
           <span
-            className={`${forte.className} text-60x ${categoryColor[category]}`}
+            className={mergeClassNames(
+              `${forte.className} text-60x ${categoryColor[category]}`,
+              transitionCls,
+              showYourScore ? fadeShow : fadeBase,
+            )}
           >
             {yourScore}
           </span>
-          <span>{yourUserName}</span>
+          <span
+            className={mergeClassNames(
+              transitionCls,
+              showFirst ? fadeShow : fadeBase,
+            )}
+          >
+            {yourUserName}
+          </span>
         </div>
-        <p className="mt-18x flex min-w-120x flex-col items-center justify-center gap-1x text-12x">
+        <p
+          className={mergeClassNames(
+            "mt-18x flex min-w-120x flex-col items-center justify-center gap-1x text-12x",
+            transitionCls,
+            showFirst ? fadeShow : fadeBase,
+          )}
+        >
           {pointOfView[category].map((point) => (
             <span key={point}>{point}</span>
           ))}
         </p>
         <div className="flex flex-col items-center justify-center gap-20x">
           <span
-            className={`${forte.className} text-60x ${categoryColor[category]}`}
+            className={mergeClassNames(
+              `${forte.className} text-60x ${categoryColor[category]}`,
+              transitionCls,
+              showOpponentScore ? fadeShow : fadeBase,
+            )}
           >
             {opponentScore}
           </span>
-          <span>{opponentUserName}</span>
+          <span
+            className={mergeClassNames(
+              transitionCls,
+              showFirst ? fadeShow : fadeBase,
+            )}
+          >
+            {opponentUserName}
+          </span>
         </div>
       </div>
     </div>
