@@ -13,14 +13,15 @@ type CategoryScoreProps = ComponentPropsWithRef<"div"> & {
 
 type Category = "pointOfInformation" | "logos" | "pathos" | "ethos"
 
-const categoryNameJp: Record<Category, string> = {
+export const categoryNameJp: Record<Category, string> = {
   pointOfInformation: "ポイントオブインフォメーション",
   logos: "ロゴス",
   pathos: "パトス",
   ethos: "エトス",
 }
 
-const pointOfView: Record<Category, string[]> = {
+// 仮実装（ここの観点についてはバックエンドから受け取る）
+export const pointOfView: Record<Category, string[]> = {
   pointOfInformation: [
     "質問の焦点・関連性",
     "回答の直答性・十分さ",
@@ -31,7 +32,7 @@ const pointOfView: Record<Category, string[]> = {
   ethos: ["礼節・公平性", "ルール遵守"],
 }
 
-const categoryColor: Record<Category, string> = {
+export const categoryColor: Record<Category, string> = {
   pointOfInformation: "text-[#E0E029]",
   logos: "text-[#FF4747]",
   pathos: "text-[#56E376]",

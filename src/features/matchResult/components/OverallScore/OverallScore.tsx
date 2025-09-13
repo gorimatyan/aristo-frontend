@@ -10,6 +10,7 @@ type OverallScoreProps = ComponentPropsWithRef<"div"> & {
   opponentScore: number
   opponentUserName: string
   yourSide: "positive" | "negative"
+  isDisplayingWinOrLoseJudge: boolean
 }
 
 export const OverallScore = ({
@@ -18,6 +19,7 @@ export const OverallScore = ({
   yourSide,
   opponentScore,
   opponentUserName,
+  isDisplayingWinOrLoseJudge = true,
   className,
   ...props
 }: OverallScoreProps) => {
@@ -155,14 +157,16 @@ export const OverallScore = ({
           </p>
         </div>
       </div>
-      <WinOrLoseJudge
-        className={mergeClassNames(
-          "-mt-32x mb-64x",
-          transitionCls,
-          showWinOrLoseJudge ? fadeShow : fadeBase,
-        )}
-        judge="win"
-      />
+      {isDisplayingWinOrLoseJudge && (
+        <WinOrLoseJudge
+          className={mergeClassNames(
+            "-mt-32x mb-64x",
+            transitionCls,
+            showWinOrLoseJudge ? fadeShow : fadeBase,
+          )}
+          judge="win"
+        />
+      )}
     </div>
   )
 }
