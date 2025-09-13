@@ -167,7 +167,7 @@ export const CategoryScore = ({
         </div>
         <p
           className={mergeClassNames(
-            "mt-18x flex min-w-120x flex-col items-center justify-center gap-1x text-12x",
+            "mt-18x flex min-w-120x flex-col items-center justify-center gap-1x text-12x font-bold",
             transitionCls,
             showFirst ? fadeShow : fadeBase,
           )}
