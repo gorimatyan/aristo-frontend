@@ -27,7 +27,7 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
         password: password,
       })
       // ログイン成功時の処理
-      localStorage.setItem("user", JSON.stringify(response.data.user))
+      localStorage.setItem("auth_token", response.data.token)
       return response.data
     } catch (error) {
       console.error("Login failed:", error)
@@ -48,7 +48,7 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
   // }
 
   const onClickLogin = () => {
-    login("test@test.com", "password")
+    login("test1@test.com", "testtest")
     // fetchUserData()
   }
 
