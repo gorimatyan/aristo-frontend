@@ -36,7 +36,7 @@ export const RegisterDialog: React.FC<RegisterDialogProps> = ({
 
     try {
       // API呼び出し
-      await axios.post("http://localhost:8080/api/register", {
+      const response = await axios.post("http://localhost:8080/api/register", {
         name: "test",
         email,
         password,
@@ -45,6 +45,7 @@ export const RegisterDialog: React.FC<RegisterDialogProps> = ({
 
       // 成功時の処理
       alert("登録が完了しました！")
+      localStorage.setItem("auth_token", response.data.token)
       onClose()
 
       // フォームリセット

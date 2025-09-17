@@ -5,6 +5,7 @@ import { PositiveNegativeButton } from "@/features/button/PositiveNegativeButton
 import Image from "next/image"
 import { useState } from "react"
 import { GradientButton } from "@/features/button/GradientButton"
+import { usePostCreateMatchingRoom } from "@/features/matchingRoom/hooks/usePostCreateMatchingRoom/usePostCreateMatchingRoom"
 
 export const ThemeNamePage = () => {
   const positive = [
@@ -21,9 +22,28 @@ export const ThemeNamePage = () => {
   const [selected, setSelected] = useState<"none" | "positive" | "negative">(
     "none",
   )
+
+  // ルーム作成のフック
+  const { mutate, isPending } = usePostCreateMatchingRoom()
+
   const handleSelect = (type: "none" | "positive" | "negative") => {
     // 再度同じボタンを押したらnoneにする
     setSelected((prev) => (prev === type ? "none" : type))
+  }
+
+  const handleStartMatching = () => {
+    // 側が選択されていない場合はエラー
+    if (selected === "none") {
+      alert("肯定側か否定側を選択してください")
+      return
+    }
+
+    // ルーム作成APIを呼び出し
+    mutate({
+      topicId: 1, // テーマID（実際の値に置き換える）
+      themeName: "education", // テーマID（実際の値に置き換える）
+      preferredSide: selected === "positive" ? "positive" : "negative",
+    })
   }
 
   const characterSpeechText = (winRate: number) => {
@@ -100,8 +120,9 @@ export const ThemeNamePage = () => {
 
         <GradientButton
           className="!mt-32x !py-16x text-20x"
-          item="マッチング開始"
-          onClick={() => {}}
+          item={isPending ? "作成中..." : "マッチング開始"}
+          onClick={handleStartMatching}
+          disabled={isPending}
         />
       </div>
       <CharacterSpeech
