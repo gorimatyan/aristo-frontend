@@ -3,13 +3,21 @@ import { MainHeader } from "@/features/header/components/MainHeader"
 import type { ComponentProps } from "react"
 import { mergeClassNames } from "@/features/style/classnames"
 import { RegisterDialog } from "@/features/auth/components/RegisterDialog/RegisterDialog"
+import { LoginDialog } from "@/features/auth/components/LoginDialog/LoginDialog"
 import { useState } from "react"
-import axios from "axios"
 
 type BackgroundLayoutProps = ComponentProps<"div"> & {
   backgroundImageSrc?: string
 }
 
+/**
+ * ログインヘッダー＋背景画像をつけられるレイアウト
+ *
+ * @param backgroundImageSrc 背景画像のソース
+ * @param children 子コンポーネント
+ * @param className クラス名
+ * @param props その他のプロパティ
+ */
 const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
   backgroundImageSrc,
   children,
@@ -17,39 +25,10 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
   ...props
 }) => {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false)
-
-  const login = async (email: string, password: string) => {
-    // CSRF保護の初期化
-    await axios.get("http://localhost:8080/sanctum/csrf-cookie")
-    try {
-      const response = await axios.post("http://localhost:8080/api/login", {
-        email: email,
-        password: password,
-      })
-      // ログイン成功時の処理
-      localStorage.setItem("auth_token", response.data.token)
-      return response.data
-    } catch (error) {
-      console.error("Login failed:", error)
-      throw error
-    }
-  }
-  // API呼び出しの例
-  // const fetchUserData = async () => {
-  //   try {
-  //     const response = await axios.get("/api/user")
-  //     return response.data
-  //   } catch (error) {
-  //     //   if (error.response.status === 401) {
-  //     //     // 未認証時の処理
-  //     //     router.push('/login')
-  //     //   }
-  //   }
-  // }
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
 
   const onClickLogin = () => {
-    login("test1@test.com", "testtest")
-    // fetchUserData()
+    setIsLoginDialogOpen(true)
   }
 
   const onClickRegister = () => {
@@ -96,6 +75,12 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({
       <RegisterDialog
         isOpen={isRegisterDialogOpen}
         onClose={() => setIsRegisterDialogOpen(false)}
+      />
+
+      {/* ログインダイアログ */}
+      <LoginDialog
+        isOpen={isLoginDialogOpen}
+        onClose={() => setIsLoginDialogOpen(false)}
       />
     </div>
   )

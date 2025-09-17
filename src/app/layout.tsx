@@ -5,6 +5,7 @@ import "./globals.css"
 import TanstackProvider from "@/features/tanstack/components/TanstackProvider"
 import CenterStageLayout from "@/features/layout/components/CenterStageLayout"
 import { ApplyWebFonts } from "@/features/fonts/ApplyWebFonts"
+import { EchoProvider } from "@/components/EchoProvider"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <CenterStageLayout>
-          <TanstackProvider>{children}</TanstackProvider>
-        </CenterStageLayout>
+        <EchoProvider>
+          <CenterStageLayout>
+            <TanstackProvider>{children}</TanstackProvider>
+          </CenterStageLayout>
+        </EchoProvider>
         <ApplyWebFonts />
       </body>
     </html>

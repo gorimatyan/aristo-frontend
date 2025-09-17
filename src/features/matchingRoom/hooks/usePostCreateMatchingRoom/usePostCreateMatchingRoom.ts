@@ -1,34 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import type { UseMutationOptions } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { apiClient } from "@/lib/api/client/api"
 import { PATH } from "@/lib/api/constants/path"
 
 // ルーム作成のリクエスト型
-interface CreateRoomRequest {
+export type CreateRoomRequest = {
   topicId: number
   themeName: string
   preferredSide?: "positive" | "negative"
 }
 
-// ルーム作成のレスポンス型
-interface CreateRoomResponse {
-  roomId: string
-  roomCode: string
-  status: "waiting" | "ready" | "in_progress" | "completed"
-  theme: {
-    id: string
-    title: string
-    description: string
+// ルーム作成のレスポンス型（API仕様に合わせて修正）
+export type CreateRoomResponse = {
+  message: string
+  data: {
+    room_id: string
+    side: "positive" | "negative"
+    matched: boolean
+    channel: string
   }
-  participants: {
-    positive: any | null
-    negative: any | null
-  }
-  created_at: string
 }
 
 // カスタムフックのオプション型
@@ -39,7 +32,6 @@ type Options = UseMutationOptions<CreateRoomResponse, Error, CreateRoomRequest>
  * @param options useMutationのオプション
  */
 export const usePostCreateMatchingRoom = (options?: Options) => {
-  const queryClient = useQueryClient()
   const router = useRouter()
 
   return useMutation({
@@ -62,16 +54,11 @@ export const usePostCreateMatchingRoom = (options?: Options) => {
       alert("ルームの作成に失敗しました")
     },
     onSuccess: (data) => {
-      // ルーム一覧のクエリを無効化（必要に応じて）
-      queryClient.invalidateQueries({
-        queryKey: ["matchingRooms"],
-      })
-
       // 成功メッセージを表示
-      alert("ルームを作成しました！")
+      alert(data.message)
 
       // 作成されたルームのページに遷移
-      router.push(`/matching/${data.roomId}`)
+      router.push(`/matching/${data.data.room_id}`)
     },
     ...options,
   })
