@@ -3,28 +3,40 @@ import BackgroundLayout from "@/features/layout/components/BackgroundLayout"
 import { CharacterSpeech } from "@/features/characterSpeech/CharacterSpeech"
 import { PositiveNegativeButton } from "@/features/button/PositiveNegativeButton"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { GradientButton } from "@/features/button/GradientButton"
-import { usePostCreateMatchingRoom } from "@/features/matchingRoom/hooks/usePostCreateMatchingRoom/usePostCreateMatchingRoom"
+import {
+  type CreateRoomResponse,
+  usePostCreateMatchingRoom,
+} from "@/features/matchingRoom/hooks/usePostCreateMatchingRoom/usePostCreateMatchingRoom"
+import { usePostLeaveMatchingRoom } from "@/features/matchingRoom/hooks/usePostLeaveMatcingRoom/usePostLeaveMatchingRoom"
+
+const positive = [
+  "デジタル社会に必須の基礎リテラシーを早期に身につけられる",
+  "論理的思考力の育成につながる",
+  "早く始めることで興味関心の幅が広がる",
+]
+const negative = [
+  "国語や算数など基礎科目がおろそかになる懸念",
+  "教師の指導力やカリキュラム整備が追いついていない",
+  "IT機器格差（家庭環境の違い）による不平等が広がる",
+]
 
 export const ThemeNamePage = () => {
-  const positive = [
-    "デジタル社会に必須の基礎リテラシーを早期に身につけられる",
-    "論理的思考力の育成につながる",
-    "早く始めることで興味関心の幅が広がる",
-  ]
-  const negative = [
-    "国語や算数など基礎科目がおろそかになる懸念",
-    "教師の指導力やカリキュラム整備が追いついていない",
-    "IT機器格差（家庭環境の違い）による不平等が広がる",
-  ]
-
+  const [isMatching, setIsMatching] = useState(false)
   const [selected, setSelected] = useState<"none" | "positive" | "negative">(
     "none",
   )
 
   // ルーム作成のフック
   const { mutate, isPending } = usePostCreateMatchingRoom()
+  const { mutate: leaveRoom } = usePostLeaveMatchingRoom()
+
+  useEffect(() => {
+    leaveRoom({})
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSelect = (type: "none" | "positive" | "negative") => {
     // 再度同じボタンを押したらnoneにする
@@ -39,11 +51,26 @@ export const ThemeNamePage = () => {
     }
 
     // ルーム作成APIを呼び出し
-    mutate({
-      topicId: 1, // テーマID（実際の値に置き換える）
-      themeName: "education", // テーマID（実際の値に置き換える）
-      preferredSide: selected === "positive" ? "positive" : "negative",
-    })
+    mutate(
+      {
+        topicId: 1, // テーマID（実際の値に置き換える）
+        themeName: "education", // テーマID（実際の値に置き換える）
+        preferredSide: selected === "positive" ? "positive" : "negative",
+      },
+      {
+        onSuccess: (data: CreateRoomResponse) => {
+          // ルーム作成成功時にチャンネルを設定
+          // console.log("ルーム作成成功:", data)
+          // console.log("チャンネル:", data.data.channel)
+          // console.log("マッチング状態:", data.data.matched ? "成立" : "待機中")
+
+          // マッチングが成立していない場合はマッチング状態を開始
+          if (!data.data.matched) {
+            setIsMatching(true)
+          }
+        },
+      },
+    )
   }
 
   const characterSpeechText = (winRate: number) => {
@@ -120,9 +147,9 @@ export const ThemeNamePage = () => {
 
         <GradientButton
           className="!mt-32x !py-16x text-20x"
-          item={isPending ? "作成中..." : "マッチング開始"}
+          item={isPending || isMatching ? "マッチング中..." : "マッチング開始"}
           onClick={handleStartMatching}
-          disabled={isPending}
+          disabled={isPending || isMatching}
         />
       </div>
       <CharacterSpeech
